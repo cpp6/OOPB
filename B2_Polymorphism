@@ -1,49 +1,74 @@
-interface Calculator {
-    int add(int a, int b);
-}
+import java.util.Scanner;
 
-interface Payment {
-
-    void pay(double amount);   
-
-    default void receipt() {
-        System.out.println("Payment Successful. Receipt Generated.");
-    }
-
-    static void paymentInfo() {
-        System.out.println("Welcome to Payment System");
-    }
-}
-
-class CreditCard implements Payment {
-    public void pay(double amount) {
-        System.out.println("Paid " + amount + " using Credit Card");
-    }
-}
-
-class UPI implements Payment {
-    public void pay(double amount) {
-        System.out.println("Paid " + amount + " using UPI");
-    }
-}
-
-public class AllInOneDemo {
-
+class Main {
     public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
+        Shape s = null;
 
-        Payment.paymentInfo();
+        String ans;
+        do {
+            System.out.println("Choose option: ");
+            System.out.println("1.Circle ");
+            System.out.println("2.Rectangle ");
 
-        Payment p;
+            int choice = sc.nextInt();
 
-        p = new CreditCard();
-        p.pay(1000);
-        p.receipt();
+            if (choice == 1) {
+                System.out.println("Enter radius: ");
+                double r = sc.nextDouble();
+                s = new Circle(r);
+            }
 
-        p = new UPI();
-        p.pay(500);
-        p.receipt();
+            else if (choice == 2) {
+                System.out.println("Enter length: ");
+                double l = sc.nextDouble();
 
-        Calculator c = (a, b) -> a + b;
-        System.out.println("Addition using Lambda: " + c.add(10, 20));
+                System.out.println("Enter breadth: ");
+                double b = sc.nextDouble();
+
+                s = new Rectangle(l, b);
+            }
+
+            else {
+                System.out.println("Invalid Input");
+            }
+
+            s.calculateArea();
+            System.out.print("Do you want to continue? (y/n): ");
+            ans = sc.next();
+        } while (ans.equals("y"));
+
+    }
+
+}
+
+interface Shape {
+    public void calculateArea();
+}
+
+class Circle implements Shape {
+    double radius;
+
+    Circle(double radius) {
+        this.radius = radius;
+    }
+
+    public void calculateArea() {
+        double area = 3.14 * radius * radius;
+        System.out.println("Area of circle is: " + area);
+    }
+}
+
+class Rectangle implements Shape {
+    double length, breadth;
+
+    Rectangle(double length, double breadth) {
+        this.length = length;
+        this.breadth = breadth;
+    }
+
+    public void calculateArea() {
+        double area = length * breadth;
+        System.out.println("Area of rectangle is: " + area);
     }
 }
